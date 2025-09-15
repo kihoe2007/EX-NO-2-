@@ -35,9 +35,76 @@ STEP-5: Display the obtained cipher text.
 
 
 Program:
-
-
-
-
-
+~~~
+import string
+def create_playfair_table(keyword):
+    keyword = keyword.upper().replace('J', 'I')
+    seen = set()
+    table = []
+    for ch in keyword + string.ascii_uppercase:
+        if ch in seen or ch == 'J':
+            continue
+        seen.add(ch)
+        table.append(ch)
+    return [table[i*5:(i+1)*5] for i in range(5)]
+def positions(table):
+    pos = {}
+    for r, row in enumerate(table):
+        for c, ch in enumerate(row):
+            pos[ch] = (r, c)
+    return pos
+def prepare_text(text):
+    text = text.upper().replace('J','I')
+    text = ''.join([c for c in text if c in string.ascii_uppercase])
+    res, i = [], 0
+    while i < len(text):
+        a = text[i]
+        b = text[i+1] if i+1 < len(text) else 'X'
+        if a == b:
+            res.append(a+'X')
+            i += 1
+        else:
+            res.append(a+b)
+            i += 2
+    return res
+def encrypt_pair(pair, table, pos):
+    a, b = pair
+    ra, ca = pos[a]
+    rb, cb = pos[b]
+    if ra == rb:
+        return table[ra][(ca+1)%5] + table[rb][(cb+1)%5]
+    elif ca == cb:
+        return table[(ra+1)%5][ca] + table[(rb+1)%5][cb]
+    else:
+        return table[ra][cb] + table[rb][ca]
+def decrypt_pair(pair, table, pos):
+    a, b = pair
+    ra, ca = pos[a]
+    rb, cb = pos[b]
+    if ra == rb:
+        return table[ra][(ca-1)%5] + table[rb][(cb-1)%5]
+    elif ca == cb:
+        return table[(ra-1)%5][ca] + table[(rb-1)%5][cb]
+    else:
+        return table[ra][cb] + table[rb][ca]
+def playfair_encrypt(text, keyword):
+    table = create_playfair_table(keyword)
+    pos = positions(table)
+    return ''.join([encrypt_pair(pair, table, pos) for pair in prepare_text(text)])
+def playfair_decrypt(cipher, keyword):
+    table = create_playfair_table(keyword)
+    pos = positions(table)
+    pairs = [cipher[i:i+2] for i in range(0, len(cipher), 2)]
+    return ''.join([decrypt_pair(pair, table, pos) for pair in pairs])
+key_value = "HELLOWORLD" 
+plain_text = "Manikandan"
+cipher_text = playfair_encrypt(plain_text, key_value)
+decrypted_text = playfair_decrypt(cipher_text, key_value)
+print("Plain Text:", plain_text)
+print("Key Value:", key_value)
+print("Encrypted Cipher Text:", cipher_text)
+print("Decrypted Cipher Text:", decrypted_text)
+~~~
 Output:
+<img width="1895" height="960" alt="Screenshot 2025-08-29 143049" src="https://github.com/user-attachments/assets/af5d4fb7-589f-4d93-ae1d-6d02b786d7a8" />
+<img width="1835" height="466" alt="Screenshot 2025-08-29 143120" src="https://github.com/user-attachments/assets/290d7103-a798-4c54-88a8-3b0ef1025fce" />
