@@ -97,7 +97,7 @@ def playfair_decrypt(cipher, keyword):
     pairs = [cipher[i:i+2] for i in range(0, len(cipher), 2)]
     return ''.join([decrypt_pair(pair, table, pos) for pair in pairs])
 key_value = "HELLOWORLD" 
-plain_text = "Manikandan"
+plain_text = "Kishore"
 cipher_text = playfair_encrypt(plain_text, key_value)
 decrypted_text = playfair_decrypt(cipher_text, key_value)
 print("Plain Text:", plain_text)
@@ -106,5 +106,7 @@ print("Encrypted Cipher Text:", cipher_text)
 print("Decrypted Cipher Text:", decrypted_text)
 ~~~
 Output:
-<img width="1895" height="960" alt="Screenshot 2025-08-29 143049" src="https://github.com/user-attachments/assets/af5d4fb7-589f-4d93-ae1d-6d02b786d7a8" />
-<img width="1835" height="466" alt="Screenshot 2025-08-29 143120" src="https://github.com/user-attachments/assets/290d7103-a798-4c54-88a8-3b0ef1025fce" />
+<img width="1701" height="968" alt="image" src="https://github.com/user-attachments/assets/165ec6c7-77bb-4077-8105-f59b036acd69" />
+
+<img width="866" height="972" alt="image" src="https://github.com/user-attachments/assets/3a94bb0c-ab65-4283-a8da-f78186e6f39e" />
+
